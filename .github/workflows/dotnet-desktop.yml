@@ -19,13 +19,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./PasswordTyper
 
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build ./PasswordTyper --configuration Release
 
     - name: Publish
-      run: dotnet publish --configuration Release --output ./publish /p:PublishProfile=Properties/PublishProfiles/FolderProfile.pubxml
+      run: dotnet publish ./PasswordTyper --configuration Release --output ./publish /p:PublishProfile=Properties/PublishProfiles/FolderProfile.pubxml
 
     - name: Create GitHub Release
       id: create_release
