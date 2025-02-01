@@ -3,10 +3,10 @@ name: Build and Publish
 on:
   push:
     tags:
-      - '*'  # ✅ Only trigger when a tag is pushed
+      - '*'
 
 permissions:
-  contents: write  # ✅ Required for creating releases
+  contents: write 
 
 jobs:
   build:
@@ -30,6 +30,9 @@ jobs:
     - name: Publish
       run: dotnet publish ./PasswordTyper --configuration Release --output ./publish /p:PublishProfile=Properties/PublishProfiles/FolderProfile.pubxml
 
+    - name: Create ZIP Archive
+      run: powershell Compress-Archive -Path ./publish/* -DestinationPath ./publish.zip
+
     - name: Create GitHub Release
       id: create_release
       uses: actions/create-release@v1
@@ -47,6 +50,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./publish
+        asset_path: ./publish.zip  # ✅ Upload ZIP file instead of a directory
         asset_name: publish.zip
         asset_content_type: application/zip
