@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManagePasswords));
             lvApplications = new ListView();
             SuspendLayout();
             // 
@@ -51,7 +52,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(lvApplications);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ManagePasswords";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ManagePasswords";
             Load += ManagePasswords_Load;
             Resize += ManagePasswords_Resize;

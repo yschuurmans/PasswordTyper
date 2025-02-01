@@ -44,6 +44,8 @@
             tb2FASecret = new TextBox();
             btnCancel = new Button();
             btnOk = new Button();
+            cbViewPasswords = new CheckBox();
+            btnDeletePassword = new Button();
             SuspendLayout();
             // 
             // tbProcessName
@@ -140,6 +142,7 @@
             tbPassword.Name = "tbPassword";
             tbPassword.Size = new Size(620, 23);
             tbPassword.TabIndex = 9;
+            tbPassword.UseSystemPasswordChar = true;
             // 
             // lbl2FASecret
             // 
@@ -167,6 +170,7 @@
             tb2FASecret.Name = "tb2FASecret";
             tb2FASecret.Size = new Size(620, 23);
             tb2FASecret.TabIndex = 12;
+            tb2FASecret.UseSystemPasswordChar = true;
             // 
             // btnCancel
             // 
@@ -190,11 +194,36 @@
             btnOk.UseVisualStyleBackColor = true;
             btnOk.Click += btnOk_Click;
             // 
+            // cbViewPasswords
+            // 
+            cbViewPasswords.AutoSize = true;
+            cbViewPasswords.Font = new Font("Segoe UI", 7F);
+            cbViewPasswords.Location = new Point(12, 380);
+            cbViewPasswords.Name = "cbViewPasswords";
+            cbViewPasswords.Size = new Size(92, 16);
+            cbViewPasswords.TabIndex = 17;
+            cbViewPasswords.Text = "View Passwords";
+            cbViewPasswords.UseVisualStyleBackColor = true;
+            cbViewPasswords.CheckedChanged += cbViewPasswords_CheckedChanged;
+            // 
+            // btnDeletePassword
+            // 
+            btnDeletePassword.Font = new Font("Segoe UI", 9F);
+            btnDeletePassword.Location = new Point(362, 369);
+            btnDeletePassword.Name = "btnDeletePassword";
+            btnDeletePassword.Size = new Size(108, 27);
+            btnDeletePassword.TabIndex = 18;
+            btnDeletePassword.Text = "Delete Password";
+            btnDeletePassword.UseVisualStyleBackColor = true;
+            btnDeletePassword.Click += btnDeletePassword_Click;
+            // 
             // ManagePasswordPrompt
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(654, 407);
+            Controls.Add(btnDeletePassword);
+            Controls.Add(cbViewPasswords);
             Controls.Add(btnCancel);
             Controls.Add(btnOk);
             Controls.Add(lbl2FASecret);
@@ -211,7 +240,9 @@
             Controls.Add(lblApplicationProcess);
             Controls.Add(lblGuide);
             Controls.Add(tbProcessName);
+            FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Name = "ManagePasswordPrompt";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "ManagePasswordPrompt";
             ResumeLayout(false);
             PerformLayout();
@@ -235,5 +266,7 @@
         private TextBox tb2FASecret;
         private Button btnCancel;
         private Button btnOk;
+        private CheckBox cbViewPasswords;
+        private Button btnDeletePassword;
     }
 }

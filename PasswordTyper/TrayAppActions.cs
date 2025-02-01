@@ -1,8 +1,10 @@
 ﻿using PasswordTyper.Forms;
 using PasswordTyper.Helpers;
+using PasswordTyper.Models;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
+using WindowsInput;
 
 namespace PasswordTyper
 {
@@ -40,28 +42,54 @@ namespace PasswordTyper
             }
             else
             {
+                var input = new InputSimulator();
                 if (appData.TypeUsername)
                 {
-                    SendKeys.Send(appData.Username);
+                    if (!IsCorrectWindow(appData))
+                    {
+                        return;
+                    }
+
+                    input.Keyboard.TextEntry(appData.Username);
+                    //SendKeys.Send(appData.Username);
                     if (appData.TypePassword || appData.TypeTotp)
                     {
-                        SendKeys.Send("{TAB}");
+                        input.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.TAB);
+                        //SendKeys.Send("{TAB}");
                     }
                 }
                 if (appData.TypePassword)
                 {
-                    SendKeys.Send(appData.Password);
+                    if (!IsCorrectWindow(appData))
+                    {
+                        return;
+                    }
+                    input.Keyboard.TextEntry(appData.Password);
+                    //SendKeys.Send(appData.Password);
                     if (appData.TypeTotp)
                     {
-                        SendKeys.Send("{TAB}");
+                        input.Keyboard.KeyPress(WindowsInput.Native.VirtualKeyCode.TAB);
+                        //SendKeys.Send("{TAB}");
                     }
                 }
                 if (appData.TypeTotp)
                 {
+                    if (!IsCorrectWindow(appData))
+                    {
+                        return;
+                    }
+
                     var totpKey = TotpHelper.GenerateTotp(appData.TotpSecret);
-                    SendKeys.Send(totpKey);
+                    input.Keyboard.TextEntry(totpKey);
+                    //SendKeys.Send(totpKey);
                 }
             }
+        }
+
+        private static bool IsCorrectWindow(ApplicationData appData)
+        {
+            var (processName, windowTitle) = GetActiveProcessAndWindow();
+            return processName == appData.ProcessName && windowTitle == appData.WindowTitle;
         }
 
         /// <summary>

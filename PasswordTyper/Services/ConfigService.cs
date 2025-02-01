@@ -213,5 +213,47 @@ namespace PasswordTyper.Services
 
             return config.Applications;
         }
+
+        internal void ChangePassword(string currentEncryptionKey, string newEncryptionKey)
+        {
+            // Decrypt the EncryptedConfig file using the currentEncryptionKey.
+            // Re-encrypt the EncryptedConfig file using the newEncryptionKey.
+            string encryptedConfig = File.ReadAllText(EncryptedConfigFilePath);
+            var decryptedConfig = AESThenHMAC.SimpleDecryptWithPassword(encryptedConfig, currentEncryptionKey);
+            if (!VerifyData(decryptedConfig))
+            {
+                throw new InvalidOperationException("Data could not be decrypted.");
+            }
+            var config = JsonConvert.DeserializeObject<Config>(decryptedConfig);
+            if (config == null)
+            {
+                throw new InvalidOperationException("Config is null.");
+            }
+            SaveConfig(config, newEncryptionKey);
+        }
+
+        internal void DeleteApplication(ApplicationData application, string masterPassword)
+        {
+            if (EncryptedData == null)
+            {
+                throw new InvalidOperationException("Data is not decrypted.");
+            }
+
+            var decryptedConfig = AESThenHMAC.SimpleDecryptWithPassword(EncryptedData, Convert.ToBase64String(VolatileEncryptionPassword));
+            var config = JsonConvert.DeserializeObject<Config>(decryptedConfig);
+            if (config == null)
+            {
+                throw new InvalidOperationException("Config is null.");
+            }
+
+            var existingApp = config.Applications.FirstOrDefault(app => app.ProcessName == application.ProcessName && app.WindowTitle == application.WindowTitle);
+            if (existingApp != null)
+            {
+                config.Applications.Remove(existingApp);
+            }
+
+            // Re-encrypt the data
+            SaveConfig(config, masterPassword);
+        }
     }
 }

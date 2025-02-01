@@ -21,6 +21,14 @@
             lvApplications.Columns.Add("Password", 200);
             lvApplications.Columns.Add("2FA Secret");
 
+            RefreshItems();
+
+            AdjustColumnWidths();
+        }
+
+        private void RefreshItems()
+        {
+            lvApplications.Items.Clear();
             foreach (var application in TrayApp.ConfigService.GetApplicationList())
             {
                 var item = new ListViewItem(new string[]
@@ -33,15 +41,13 @@
                 });
                 lvApplications.Items.Add(item);
             }
-
-            AdjustColumnWidths();
         }
 
         private void AdjustColumnWidths()
         {
             foreach (ColumnHeader column in lvApplications.Columns)
             {
-                column.Width = lvApplications.Width / lvApplications.Columns.Count;
+                column.Width = (lvApplications.Width - 5) / lvApplications.Columns.Count;
             }
         }
 
@@ -52,14 +58,30 @@
 
         private void lvApplications_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            // open the ManagePasswordPrompt form with the selected application data
+            if (lvApplications.SelectedItems.Count > 0)
+            {
+                var processName = lvApplications.SelectedItems[0].SubItems[0].Text;
+                var windowTitle = lvApplications.SelectedItems[0].SubItems[1].Text;
+                OpenApplicationDataForm(processName, windowTitle);
 
+            }
         }
 
         private void OpenApplicationDataForm(string processName, string windowTitle)
         {
             var applicationData = TrayApp.ConfigService.GetApplicationData(processName, windowTitle);
-            var applicationDataForm = new ManagePasswordPrompt(processName, windowTitle, applicationData);
-            applicationDataForm.ShowDialog();
+            if (applicationData != null)
+            {
+                var applicationDataForm = new ManagePasswordPrompt(applicationData);
+                applicationDataForm.ShowDialog();
+            }
+            else
+            {
+                var applicationDataForm = new ManagePasswordPrompt(processName, windowTitle);
+                applicationDataForm.ShowDialog();
+            }
+            RefreshItems();
         }
     }
 }

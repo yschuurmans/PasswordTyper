@@ -11,17 +11,23 @@ namespace PasswordTyper
         public static readonly ConfigService ConfigService = new ConfigService();
         private bool IsProcessingHotkey = false;
 
+        private ManagePasswords ManagePasswordsWindow;
+
         public TrayApp()
         {
             trayIcon = new NotifyIcon()
             {
-                Icon = System.Drawing.SystemIcons.Application,
+                Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath),
                 ContextMenuStrip = new ContextMenuStrip()
             };
 
+            trayIcon.DoubleClick += ManagePasswords;
             trayIcon.ContextMenuStrip.Items.Add("Manage Passwords", null, ManagePasswords);
+            trayIcon.ContextMenuStrip.Items.Add("Change Master Password", null, ChangePassword);
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, Exit);
             trayIcon.Visible = true;
+
+            //double clicking also opens ManagePasswords
 
             if (!ConfigService.ConfigExists())
             {
@@ -40,6 +46,8 @@ namespace PasswordTyper
                     ConfigService.InitializeNewConfig(masterPassword);
                 }
             }
+
+            ManagePasswordsWindow = new ManagePasswords();
 
             RegisterHotKey();
             Application.AddMessageFilter(new HotkeyMessageFilter(1, TypePassword));
@@ -67,11 +75,32 @@ namespace PasswordTyper
             IsProcessingHotkey = false;
         }
 
-        private void ManagePasswords(object sender, EventArgs e)
+        private void ManagePasswords(object? sender, EventArgs e)
         {
             // Open forms window
-            var managePasswords = new ManagePasswords();
-            managePasswords.Show();
+            if (ManagePasswordsWindow.IsDisposed)
+            {
+                ManagePasswordsWindow = new ManagePasswords();
+                ManagePasswordsWindow.Show();
+            }
+            else
+            {
+                ManagePasswordsWindow.Show();
+            }
+        }
+
+        private void ChangePassword(object sender, EventArgs e)
+        {
+            // Open forms window
+            // If any forms are already open, give an error message telling to close all forms first.
+            if (ManagePasswordsWindow != null && !ManagePasswordsWindow.IsDisposed)
+            {
+                MessageBox.Show("Please close the Manage Passwords window before changing your master password.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var changePasswordDialog = new ChangePasswordDialog();
+            changePasswordDialog.ShowDialog();
         }
 
         private void Exit(object sender, EventArgs e)
