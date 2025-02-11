@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<item>
+  <version>0.2</version>
+  <url>https://github.com/yschuurmans/PasswordTyper/releases/latest/download/publish.zip</url>
+  <changelog>https://github.com/ravibpatel/AutoUpdater.NET/releases</changelog>
+  <mandatory mode="2">true</mandatory>
+</item>
