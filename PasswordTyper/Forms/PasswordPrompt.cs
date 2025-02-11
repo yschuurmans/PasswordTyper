@@ -61,5 +61,11 @@
             }
             return (false, "");
         }
+
+        private void PasswordPrompt_Load(object sender, EventArgs e)
+        {
+            // Focus this dialog window
+            this.Activate();
+        }
     }
 }

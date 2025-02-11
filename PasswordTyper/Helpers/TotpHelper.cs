@@ -8,7 +8,8 @@ namespace PasswordTyper.Helpers
         {
             var secretBytes = Base32Encoding.ToBytes(secret);
             var totp = new Totp(secretBytes);
-            return totp.ComputeTotp();
+
+            return totp.ComputeTotp(DateTime.UtcNow.AddSeconds(5));
         }
     }
 }

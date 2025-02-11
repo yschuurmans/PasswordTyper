@@ -85,11 +85,11 @@
             Controls.Add(label1);
             Controls.Add(tbPassword);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
-            ImeMode = ImeMode.NoControl;
             Name = "PasswordPrompt";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Password";
             TopMost = true;
+            Load += PasswordPrompt_Load;
             ResumeLayout(false);
             PerformLayout();
         }
