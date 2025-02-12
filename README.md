@@ -10,7 +10,9 @@ For those games and applications that regularly require you to type in your pass
 ## Installation
 Download the setup file from the latest release:
     [PasswordTyper Setup](https://github.com/yschuurmans/PasswordTyper/releases/latest/download/PasswordTyper-win-Setup.exe)
-Run the setup file and follow the installation instructions.
+
+Run the setup file and the application will install, and appear in the system tray.
+Access the application's primary function by pressing the "superpaste" autofill hotkey: CTRL+ALT+SHIFT+V 
 
 ## Contributing
 Contributions are welcome! Please fork the repository and submit a pull request.
