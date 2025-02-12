@@ -4,7 +4,7 @@ For those games and applications that regularly require you to type in your pass
 
 ## Features
 - Quickly and easily type your complex passwords.
-- Generate and auto-type your TOTP codes.
+- Generate and auto-type your 2-Factor Authentication codes.
 - Ideal for games and applications that don't support "remember me" functionality or where it doesn't work well.
 
 ![image](https://github.com/user-attachments/assets/4d563f68-c182-43d9-b323-d9c34abac837)
