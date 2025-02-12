@@ -22,6 +22,12 @@ namespace PasswordTyper
             };
 
             trayIcon.DoubleClick += ManagePasswords;
+
+            trayIcon.ContextMenuStrip.Items.Add($"Password Typer v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}").Enabled = false;
+            trayIcon.ContextMenuStrip.Items.Add("Made by Youri Schuurmans").Enabled = false;
+
+            trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
             trayIcon.ContextMenuStrip.Items.Add("Manage Passwords", null, ManagePasswords);
             trayIcon.ContextMenuStrip.Items.Add("Change Master Password", null, ChangePassword);
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, Exit);
