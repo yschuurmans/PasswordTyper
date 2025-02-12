@@ -19,7 +19,7 @@ jobs:
     - name: Get Version from Project File
       id: get-version
       shell: bash
-      run: echo "version=$(grep -oE '<Version>[^<]+' MyApplication/MyApplication.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
+      run: echo "version=$(grep -oE '<Version>[^<]+' PasswordTyper/PasswordTyper.csproj | sed 's/<Version>//')" >> $GITHUB_OUTPUT
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
@@ -27,13 +27,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore ./PasswordTyper
+      run: dotnet restore PasswordTyper/PasswordTyper.csproj
 
     - name: Build
-      run: dotnet build ./PasswordTyper --configuration Release
+      run: dotnet build PasswordTyper/PasswordTyper.csproj --configuration Release
 
     - name: Publish Application
-      run: dotnet publish ./PasswordTyper/PasswordTyper.csproj -c Release -o publish -r win-x64 --self-contained true
+      run: dotnet publish PasswordTyper/PasswordTyper.csproj -c Release -o publish -r win-x64 --self-contained true
 
     - name: Create Velopack Release
       run: |
