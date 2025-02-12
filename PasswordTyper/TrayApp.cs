@@ -1,4 +1,5 @@
 ﻿using PasswordTyper.Forms;
+using PasswordTyper.Helpers;
 using PasswordTyper.Models;
 using PasswordTyper.Services;
 using System.Runtime.InteropServices;
@@ -22,6 +23,34 @@ namespace PasswordTyper
             };
 
             trayIcon.DoubleClick += ManagePasswords;
+
+            trayIcon.ContextMenuStrip.Items.Add($"Password Typer v{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}").Enabled = false;
+            trayIcon.ContextMenuStrip.Items.Add("Made by Youri Schuurmans").Enabled = false;
+
+            trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
+            //Add checkbox toggle to start the application at startup, use StartupHelper class
+            // The toggle should default to wether or not it is already in the startup registry
+            var startupItem = new ToolStripMenuItem("Start at Startup", null, (sender, e) =>
+            {
+                if (sender == null) return;
+
+                if (StartupHelper.IsApplicationInStartup())
+                {
+                    StartupHelper.RemoveApplicationFromStartup();
+                }
+                else
+                {
+                    StartupHelper.AddApplicationToStartup();
+                }
+
+                ((ToolStripMenuItem)sender).Checked = StartupHelper.IsApplicationInStartup();
+            });
+            startupItem.Checked = StartupHelper.IsApplicationInStartup();
+            trayIcon.ContextMenuStrip.Items.Add(startupItem);
+
+            trayIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+
             trayIcon.ContextMenuStrip.Items.Add("Manage Passwords", null, ManagePasswords);
             trayIcon.ContextMenuStrip.Items.Add("Change Master Password", null, ChangePassword);
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, Exit);
