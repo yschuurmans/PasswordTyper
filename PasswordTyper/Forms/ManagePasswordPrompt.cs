@@ -1,4 +1,5 @@
 ﻿using PasswordTyper.Models;
+using ZXing;
 
 namespace PasswordTyper.Forms
 {
@@ -177,6 +178,55 @@ namespace PasswordTyper.Forms
             TrayApp.ConfigService.DeleteApplication(application, password.password);
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void btn_GetFromClipboard_Click(object sender, EventArgs e)
+        {
+            Get2FASecretFromClipboard();
+        }
+
+        private void Get2FASecretFromClipboard()
+        {
+            // get the image currently on the clipboard
+            // attempt to read the 2FA secret from the image, it might not be a perfect fit QR code
+            // if it fails, show an error message
+            // if it succeeds, fill in the 2FA secret textbox
+
+            if (!Clipboard.ContainsImage())
+            {
+                MessageBox.Show("There is no image on the clipboard.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var image = Clipboard.GetImage();
+            if (image == null)
+            {
+                MessageBox.Show("There was an error reading the image from the clipboard.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Read the QR code from the image
+
+
+            var coreCompatReader = new ZXing.CoreCompat.System.Drawing.BarcodeReader();
+            using (var coreCompatImage = (System.Drawing.Bitmap)System.Drawing.Bitmap.FromFile(@"C:\Users\Xavier\Pictures\qrimage.png"))
+            {
+                var coreCompatResult = coreCompatReader.Decode(coreCompatImage);
+            }
+
+
+            var reader = new BarcodeReader<Image>(null);
+            var result = reader.Decode(image);
+
+            if (result == null)
+            {
+                MessageBox.Show("No QR code found in the image.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            tb2FASecret.Text = result.Text;
+
+
         }
     }
 }

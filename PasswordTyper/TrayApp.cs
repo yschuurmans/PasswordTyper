@@ -53,6 +53,9 @@ namespace PasswordTyper
 
             trayIcon.ContextMenuStrip.Items.Add("Manage Passwords", null, ManagePasswords);
             trayIcon.ContextMenuStrip.Items.Add("Change Master Password", null, ChangePassword);
+
+            // REMOVE ALL DATA option, in case the user forgot their password.
+
             trayIcon.ContextMenuStrip.Items.Add("Exit", null, Exit);
             trayIcon.Visible = true;
 

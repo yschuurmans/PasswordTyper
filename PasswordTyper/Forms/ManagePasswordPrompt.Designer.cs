@@ -46,6 +46,7 @@
             btnOk = new Button();
             cbViewPasswords = new CheckBox();
             btnDeletePassword = new Button();
+            btn_GetFromClipboard = new Button();
             SuspendLayout();
             // 
             // tbProcessName
@@ -168,7 +169,7 @@
             // 
             tb2FASecret.Location = new Point(12, 340);
             tb2FASecret.Name = "tb2FASecret";
-            tb2FASecret.Size = new Size(620, 23);
+            tb2FASecret.Size = new Size(484, 23);
             tb2FASecret.TabIndex = 12;
             tb2FASecret.UseSystemPasswordChar = true;
             // 
@@ -217,11 +218,23 @@
             btnDeletePassword.UseVisualStyleBackColor = true;
             btnDeletePassword.Click += btnDeletePassword_Click;
             // 
+            // btn_GetFromClipboard
+            // 
+            btn_GetFromClipboard.Font = new Font("Segoe UI", 9F);
+            btn_GetFromClipboard.Location = new Point(502, 336);
+            btn_GetFromClipboard.Name = "btn_GetFromClipboard";
+            btn_GetFromClipboard.Size = new Size(130, 27);
+            btn_GetFromClipboard.TabIndex = 19;
+            btn_GetFromClipboard.Text = "Get From Clipboard";
+            btn_GetFromClipboard.UseVisualStyleBackColor = true;
+            btn_GetFromClipboard.Click += btn_GetFromClipboard_Click;
+            // 
             // ManagePasswordPrompt
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(654, 407);
+            Controls.Add(btn_GetFromClipboard);
             Controls.Add(btnDeletePassword);
             Controls.Add(cbViewPasswords);
             Controls.Add(btnCancel);
@@ -268,5 +281,6 @@
         private Button btnOk;
         private CheckBox cbViewPasswords;
         private Button btnDeletePassword;
+        private Button btn_GetFromClipboard;
     }
 }
