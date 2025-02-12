@@ -26,7 +26,7 @@ namespace Encryption
         //Preconfigured Password Key Derivation Parameters
         public static readonly int SaltBitSize = 64;
         public static readonly int Iterations = 10000;
-        public static readonly int MinPasswordLength = 8;
+        public static readonly int MinPasswordLength = 6;
 
         /// <summary>
         /// Helper that generates a random key on each call.
