@@ -33,6 +33,7 @@ namespace PasswordTyper.Services
             return File.Exists(EncryptedConfigFilePath);
         }
 
+
         public bool VerifyPassword(string decryptionKey)
         {
             string encryptedConfig = File.ReadAllText(EncryptedConfigFilePath);

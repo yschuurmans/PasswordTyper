@@ -1,3 +1,5 @@
+using NuGet.Versioning;
+using PasswordTyper.Helpers;
 using Velopack;
 using Velopack.Sources;
 
@@ -11,12 +13,15 @@ namespace PasswordTyper
         [STAThread]
         static void Main()
         {
-            VelopackApp.Build().Run();
+            VelopackApp.Build()
+                .WithFirstRun(FirstRun)
+                .Run();
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
             //Application.Run(new Form1());
+
 
 #if !DEBUG
             UpdateApp().Wait();
@@ -25,6 +30,12 @@ namespace PasswordTyper
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TrayApp());
+
+        }
+
+        private static void FirstRun(SemanticVersion version)
+        {
+            StartupHelper.AddApplicationToStartup();
         }
 
         private static async Task UpdateApp()
