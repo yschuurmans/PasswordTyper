@@ -74,6 +74,10 @@ namespace PasswordTyper
                     string masterPassword = passwordPrompt.Password;
                     ConfigService.InitializeNewConfig(masterPassword);
                 }
+                else
+                {
+                    Task.Run(Application.Exit);
+                }
             }
 
             ManagePasswordsWindow = new ManagePasswords();
