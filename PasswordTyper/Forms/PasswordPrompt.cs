@@ -18,7 +18,7 @@
         {
             if (!MeetsPasswordRequirements(tbPassword.Text))
             {
-                MessageBox.Show("Password must be at least 8 characters long, and contain at least one number.", "Invalid Password", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Password must be at least 6 characters long, and contain at least one number.", "Invalid Password", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -35,7 +35,7 @@
         private bool MeetsPasswordRequirements(string password)
         {
             // Password must be at least 8 characters long, and contain at least one number.
-            return password.Length >= 8 && password.Any(char.IsDigit);
+            return password.Length >= 6 && password.Any(char.IsDigit);
         }
 
         public static (bool correct, string password) PromptPassword()
@@ -66,6 +66,36 @@
         {
             // Focus this dialog window
             this.Activate();
+        }
+
+        private void tbPassword_TextChanged(object sender, EventArgs e)
+        {
+            tHintTimer.Stop();
+            tHintTimer.Start();
+
+            if (!MeetsPasswordRequirements(tbPassword.Text))
+            {
+                btnOk.Enabled = false;
+            }
+            else
+            {
+                btnOk.Enabled = true;
+            }
+        }
+
+        private void tHintTimer_Tick(object sender, EventArgs e)
+        {
+            tHintTimer.Stop();
+            if (!MeetsPasswordRequirements(tbPassword.Text))
+            {
+                var text = "Password must be at least 6 characters long, and contain at least one number.";
+                ttPasswordhint.Show(text, tbPassword, 3000);
+                ttPasswordhint.Show(text, tbPassword, 3000);
+            }
+            else
+            {
+                ttPasswordhint.Hide(tbPassword);
+            }
         }
     }
 }

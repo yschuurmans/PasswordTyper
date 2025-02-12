@@ -28,10 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             tbPassword = new TextBox();
             label1 = new Label();
             btnOk = new Button();
             btnCancel = new Button();
+            ttPasswordhint = new ToolTip(components);
+            tHintTimer = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // tbPassword
@@ -42,6 +45,7 @@
             tbPassword.Size = new Size(350, 23);
             tbPassword.TabIndex = 0;
             tbPassword.UseSystemPasswordChar = true;
+            tbPassword.TextChanged += tbPassword_TextChanged;
             // 
             // label1
             // 
@@ -75,6 +79,17 @@
             btnCancel.UseVisualStyleBackColor = true;
             btnCancel.Click += btnCancel_Click;
             // 
+            // ttPasswordhint
+            // 
+            ttPasswordhint.BackColor = Color.NavajoWhite;
+            ttPasswordhint.IsBalloon = true;
+            ttPasswordhint.ToolTipTitle = "Password does not meet requirements";
+            // 
+            // tHintTimer
+            // 
+            tHintTimer.Interval = 2500;
+            tHintTimer.Tick += tHintTimer_Tick;
+            // 
             // PasswordPrompt
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -100,5 +115,7 @@
         private Label label1;
         private Button btnOk;
         private Button btnCancel;
+        private ToolTip ttPasswordhint;
+        private System.Windows.Forms.Timer tHintTimer;
     }
 }

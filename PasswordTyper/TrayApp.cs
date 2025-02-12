@@ -73,6 +73,8 @@ namespace PasswordTyper
                 {
                     string masterPassword = passwordPrompt.Password;
                     ConfigService.InitializeNewConfig(masterPassword);
+
+                    MessageBox.Show("Your master password has been set. You can now start adding passwords to the application by pressing the Superpaste hotkey (CTRL+ALT+SHIFT+V).", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
