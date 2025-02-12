@@ -39,5 +39,5 @@ jobs:
       run: |
         dotnet tool install -g vpk
         vpk download github --repoUrl https://github.com/${{ github.repository }}
-        vpk pack -u MyUniqueIdentifier -v ${{ steps.get-version.outputs.version }} -p publish
-        vpk upload github --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "MyProject ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
+        vpk pack -u PasswordTyper -v ${{ steps.get-version.outputs.version }} -p publish -e PasswordTyper.exe
+        vpk upload github --repoUrl https://github.com/${{ github.repository }} --publish --releaseName "PasswordTyper ${{ steps.get-version.outputs.version }}" --tag v${{ steps.get-version.outputs.version }}
