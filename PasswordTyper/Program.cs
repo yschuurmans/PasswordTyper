@@ -18,7 +18,9 @@ namespace PasswordTyper
             ApplicationConfiguration.Initialize();
             //Application.Run(new Form1());
 
+#if !DEBUG
             UpdateApp().Wait();
+#endif
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
