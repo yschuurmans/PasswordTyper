@@ -19,10 +19,7 @@ In the context menu, you will find the password manager UI, the option to change
 ![image](https://github.com/user-attachments/assets/a0552478-0fb0-4fcf-80bc-e7f9eaf9d3f7)
 
 # Installation
-Download the setup file from the latest release:
-[Latest release](https://github.com/yschuurmans/PasswordTyper/releases/latest)
-
-Or directly install the latest release:
+Download the latest version below:
 [PasswordTyper Setup](https://github.com/yschuurmans/PasswordTyper/releases/latest/download/PasswordTyper-win-Setup.exe)
 
 
