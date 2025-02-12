@@ -31,6 +31,8 @@ namespace PasswordTyper
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new TrayApp());
 
+        }
+
         private static void FirstRun(SemanticVersion version)
         {
             StartupHelper.AddApplicationToStartup();
