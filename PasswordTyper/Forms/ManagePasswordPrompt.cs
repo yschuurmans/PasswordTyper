@@ -1,5 +1,7 @@
-﻿using PasswordTyper.Models;
-using ZXing;
+﻿using OtpNet;
+using PasswordTyper.Models;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace PasswordTyper.Forms
 {
@@ -17,6 +19,7 @@ namespace PasswordTyper.Forms
         {
             InitializeComponent();
 
+            btnDeletePassword.Visible = false;
             tbProcessName.Text = processName;
             tbWindowTitle.Text = windowTitle;
             ReevaluateEnabled();
@@ -36,6 +39,7 @@ namespace PasswordTyper.Forms
             tbPassword.Text = applicationData.Password;
             cb2FASecret.Checked = applicationData.TypeTotp;
             tb2FASecret.Text = applicationData.TotpSecret;
+            btnDeletePassword.Visible = true;
 
             ReevaluateEnabled();
         }
@@ -187,46 +191,75 @@ namespace PasswordTyper.Forms
 
         private void Get2FASecretFromClipboard()
         {
-            // get the image currently on the clipboard
-            // attempt to read the 2FA secret from the image, it might not be a perfect fit QR code
-            // if it fails, show an error message
-            // if it succeeds, fill in the 2FA secret textbox
-
-            if (!Clipboard.ContainsImage())
             {
-                MessageBox.Show("There is no image on the clipboard.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                // get the image currently on the clipboard
+                // attempt to read the 2FA secret from the image, it might not be a perfect fit QR code
+                // if it fails, show an error message
+                // if it succeeds, fill in the 2FA secret textbox
+
+                if (!Clipboard.ContainsImage())
+                {
+                    MessageBox.Show("There is no image on the clipboard.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                var image = Clipboard.GetImage();
+                if (image == null)
+                {
+                    MessageBox.Show("There was an error reading the image from the clipboard.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Read the QR code from the photo in the clipboard, similar to how a phone camera would capture a QR code from the camera
+                var reader = new ZXing.Windows.Compatibility.BarcodeReader();
+                reader.Options.TryHarder = true;
+                reader.Options.PossibleFormats = new List<ZXing.BarcodeFormat> { ZXing.BarcodeFormat.QR_CODE };
+
+                var bitmap = new Bitmap(image);
+                var result = reader.Decode(bitmap);
+
+                if (result == null)
+                {
+                    MessageBox.Show("No (valid) QR code found in the image.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // The result would be an otpauth link, like: otpauth://totp/LabelOfTheWebsite?secret=SECRETSECRETSECRET&issuer=WebsiteName
+                // First, validate if it is a valid otpauth link, and if it is, 
+                var otpauthPattern = @"^otpauth://totp/[^?]+\?(.*&)?secret=([^&]+)(&.*)?$";
+                var match = Regex.Match(result.Text, otpauthPattern);
+
+                if (!match.Success)
+                {
+                    MessageBox.Show($"The QR code found in the image does not contain a valid 2FA link.\r\nThe QR code contained: \"{result.Text}\"", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //get the Label, the issuer and the secret
+                var uri = new Uri(result.Text);
+                var query = HttpUtility.ParseQueryString(uri.Query);
+                var label = uri.AbsolutePath.Split('/').Last();
+                var issuer = query.Get("issuer");
+                var secret = query.Get("secret");
+
+                try
+                {
+                    var secretBytes = Base32Encoding.ToBytes(secret);
+
+                    // Show a message box, asking if the user if "Found a valid 2FA code! Would you like to add the code for "Label": "Issuer"? "
+                    var message = $"Found a valid 2FA code! Would you like to add the code for \"{label}\": \"{issuer}\"?";
+                    var result2 = MessageBox.Show(message, "2FA Code Found", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    if (result2 == DialogResult.Yes)
+                    {
+                        tb2FASecret.Text = secret;
+                    }
+                }
+                catch
+                {
+                    MessageBox.Show($"The QR code found in the image does not contain a valid secret.\r\nThe QR code contained: \"{result.Text}\"", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
-
-            var image = Clipboard.GetImage();
-            if (image == null)
-            {
-                MessageBox.Show("There was an error reading the image from the clipboard.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Read the QR code from the image
-
-
-            var coreCompatReader = new ZXing.CoreCompat.System.Drawing.BarcodeReader();
-            using (var coreCompatImage = (System.Drawing.Bitmap)System.Drawing.Bitmap.FromFile(@"C:\Users\Xavier\Pictures\qrimage.png"))
-            {
-                var coreCompatResult = coreCompatReader.Decode(coreCompatImage);
-            }
-
-
-            var reader = new BarcodeReader<Image>(null);
-            var result = reader.Decode(image);
-
-            if (result == null)
-            {
-                MessageBox.Show("No QR code found in the image.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            tb2FASecret.Text = result.Text;
-
-
         }
     }
 }
