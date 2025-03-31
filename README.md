@@ -4,7 +4,7 @@ For those games and applications that regularly require you to type in your pass
 
 ## Features
 - Quickly and easily type your complex passwords.
-- Generate and auto-type your TOTP codes.
+- Generate and auto-type your 2-Factor Authentication codes.
 - Ideal for games and applications that don't support "remember me" functionality or where it doesn't work well.
 
 ![image](https://github.com/user-attachments/assets/4d563f68-c182-43d9-b323-d9c34abac837)
@@ -19,10 +19,7 @@ In the context menu, you will find the password manager UI, the option to change
 ![image](https://github.com/user-attachments/assets/a0552478-0fb0-4fcf-80bc-e7f9eaf9d3f7)
 
 # Installation
-Download the setup file from the latest release:
-[Latest release](https://github.com/yschuurmans/PasswordTyper/releases/latest)
-
-Or directly install the latest release:
+Download the latest version below:
 [PasswordTyper Setup](https://github.com/yschuurmans/PasswordTyper/releases/latest/download/PasswordTyper-win-Setup.exe)
 
 
